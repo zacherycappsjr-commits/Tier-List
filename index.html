@@ -3,24 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tier List</title>
+    <title>Public Tier List</title>
     <style>
       :root {
-        --bg: #0f172a;
-        --panel: #111827;
-        --text: #f9fafb;
+        --bg: #07111f;
+        --card: #101d31;
+        --text: #f8fafc;
         --muted: #94a3b8;
+        --accent: #38bdf8;
         --s: #ef4444;
         --a: #f59e0b;
         --b: #eab308;
-        --c: #10b981;
+        --c: #22c55e;
       }
 
       * { box-sizing: border-box; }
       body {
         margin: 0;
         font-family: Arial, sans-serif;
-        background: var(--bg);
+        background: linear-gradient(135deg, var(--bg), #16253f);
         color: var(--text);
         padding: 24px;
       }
@@ -30,8 +31,16 @@
         margin: 0 auto;
       }
 
-      h1 { margin-top: 0; }
-      p { color: var(--muted); }
+      .hero {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 20px;
+      }
+
+      h1 { margin: 0 0 8px; font-size: 2rem; }
+      p { color: var(--muted); line-height: 1.5; }
 
       .tier {
         display: grid;
@@ -64,7 +73,7 @@
         border: 2px dashed #334155;
         border-radius: 12px;
         padding: 10px;
-        background: rgba(255,255,255,0.03);
+        background: rgba(255,255,255,0.04);
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
@@ -82,7 +91,7 @@
 
       .item.dragging { opacity: 0.5; }
 
-      .hint { font-size: 0.95rem; margin-bottom: 18px; }
+      .hint { font-size: 0.95rem; margin-bottom: 0; }
 
       @media (max-width: 700px) {
         .tier { grid-template-columns: 1fr; }
@@ -92,8 +101,10 @@
   </head>
   <body>
     <div class="page">
-      <h1>My Favorite Games Tier List</h1>
-      <p class="hint">Drag each game into the tier you want. This is a simple public tier list you can share.</p>
+      <div class="hero">
+        <h1>Public Tier List</h1>
+        <p class="hint">Drag and drop items between tiers to build your own ranking. This page is ready to share publicly.</p>
+      </div>
 
       <div class="tier">
         <div class="tier-label s">S</div>
