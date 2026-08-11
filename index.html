@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tier List</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --panel: #111827;
+        --text: #f9fafb;
+        --muted: #94a3b8;
+        --s: #ef4444;
+        --a: #f59e0b;
+        --b: #eab308;
+        --c: #10b981;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        padding: 24px;
+      }
+
+      .page {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      h1 { margin-top: 0; }
+      p { color: var(--muted); }
+
+      .tier {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 12px;
+        margin-bottom: 14px;
+        align-items: start;
+      }
+
+      .tier-label {
+        padding: 16px;
+        font-weight: bold;
+        text-align: center;
+        border-radius: 10px;
+        color: white;
+        min-height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+      }
+
+      .tier-label.s { background: var(--s); }
+      .tier-label.a { background: var(--a); }
+      .tier-label.b { background: var(--b); }
+      .tier-label.c { background: var(--c); }
+
+      .dropzone {
+        min-height: 90px;
+        border: 2px dashed #334155;
+        border-radius: 12px;
+        padding: 10px;
+        background: rgba(255,255,255,0.03);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .item {
+        background: white;
+        color: #111827;
+        font-weight: 600;
+        padding: 10px 14px;
+        border-radius: 999px;
+        cursor: grab;
+        user-select: none;
+      }
+
+      .item.dragging { opacity: 0.5; }
+
+      .hint { font-size: 0.95rem; margin-bottom: 18px; }
+
+      @media (max-width: 700px) {
+        .tier { grid-template-columns: 1fr; }
+        .tier-label { min-height: auto; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <h1>My Favorite Games Tier List</h1>
+      <p class="hint">Drag each game into the tier you want. This is a simple public tier list you can share.</p>
+
+      <div class="tier">
+        <div class="tier-label s">S</div>
+        <div class="dropzone" data-tier="S"></div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-label a">A</div>
+        <div class="dropzone" data-tier="A"></div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-label b">B</div>
+        <div class="dropzone" data-tier="B"></div>
+      </div>
+
+      <div class="tier">
+        <div class="tier-label c">C</div>
+        <div class="dropzone" data-tier="C"></div>
+      </div>
+    </div>
+
+    <script>
+      const initialItems = {
+        S: ["Minecraft", "Portal"],
+        A: ["Hades", "Celeste"],
+        B: ["Stardew Valley", "Hollow Knight"],
+        C: ["No Man's Sky", "Bioshock"]
+      };
+
+      const dropzones = document.querySelectorAll('.dropzone');
+      let draggedItem = null;
+
+      function render() {
+        dropzones.forEach(zone => {
+          const tier = zone.dataset.tier;
+          zone.innerHTML = '';
+          (initialItems[tier] || []).forEach(label => {
+            const item = document.createElement('div');
+            item.className = 'item';
+            item.textContent = label;
+            item.draggable = true;
+            item.addEventListener('dragstart', () => {
+              draggedItem = label;
+              item.classList.add('dragging');
+            });
+            item.addEventListener('dragend', () => {
+              item.classList.remove('dragging');
+              draggedItem = null;
+            });
+            zone.appendChild(item);
+          });
+        });
+      }
+
+      dropzones.forEach(zone => {
+        zone.addEventListener('dragover', event => {
+          event.preventDefault();
+        });
+
+        zone.addEventListener('drop', event => {
+          event.preventDefault();
+          if (!draggedItem) return;
+
+          Object.keys(initialItems).forEach(tier => {
+            initialItems[tier] = initialItems[tier].filter(item => item !== draggedItem);
+          });
+
+          const targetTier = zone.dataset.tier;
+          initialItems[targetTier] = [...initialItems[targetTier], draggedItem];
+          render();
+        });
+      });
+
+      render();
+    </script>
+  </body>
+</html>
